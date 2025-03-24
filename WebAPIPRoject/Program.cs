@@ -12,9 +12,17 @@ namespace WebAPIPRoject
 
             // Add services to the container.
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers().ConfigureApiBehaviorOptions(options =>
+                options.SuppressModelStateInvalidFilter = true
+            ); ;
             builder.Services.AddDbContext<ITIContext>(option => {
                 option.UseSqlServer(builder.Configuration.GetConnectionString("cs"));
+            });
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("MyPolicy", policy =>
+                    policy.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin()
+                ) ;
             });
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -29,11 +37,13 @@ namespace WebAPIPRoject
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-            //app.UseStaticFiles(); read image  --->
-            //app.UseRoute();
+            app.UseStaticFiles(); //read image  --->
+            
+            app.UseCors("MyPolicy");
+            
             app.UseAuthorization();
             app.MapControllers();
-            //mvc default route -web api  Resource
+            //mvc default route - web api  Resource
             //==>uniform name using route attribute[]
 
             app.Run();
