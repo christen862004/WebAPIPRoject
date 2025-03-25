@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebAPIPRoject.DTO;
@@ -16,6 +17,7 @@ namespace WebAPIPRoject.Controllers
             this.context = context;
         }
 
+        [Authorize]
         [HttpGet("{id:int}")]
         public IActionResult GetEmp(int id)
         {
