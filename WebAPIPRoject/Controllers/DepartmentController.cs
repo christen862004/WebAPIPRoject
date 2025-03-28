@@ -17,18 +17,6 @@ namespace WebAPIPRoject.Controllers
         {
             this.context = context;
         }
-        [HttpGet("c/{id:int}")]
-        public IActionResult DeptWithCount(int id)
-        {
-            var dept=
-                context.Departments.Include(d=>d.Employees)
-                .Select(d=>new DeprtmentWithCountDTO() 
-                    { DeptId=d.Id,DEptName=d.Name,EmpCount=d.Employees.Count()})
-                .FirstOrDefault(d=>d.DeptId==id);
-            return Ok(dept);
-        }
-        
-        
         
         [HttpGet]//api/department Get
         public IActionResult getAll()
